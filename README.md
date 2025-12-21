@@ -97,7 +97,3 @@ When executed, `env-police` performs the following operations:
 ## License
 
 ISC
-```
-
-This is now **one complete Markdown file** — no fragments, no separate blocks. You can paste it directly into your repository’s `README.md`.
-```
