@@ -1,6 +1,6 @@
 {
   "name": "env-police",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A CLI tool to validate process.env usage against .env files",
   "main": "./dist/index.js",
   "bin": {
@@ -19,10 +19,22 @@
     "env",
     "dotenv",
     "validation",
-    "cli"
+    "cli",
+    "config",
+    "process.env",
+    "environment-variables",
+    "check"
   ],
-  "author": "Your Name",
+  "author": "Fairoz Ahmed",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fairoz-539/env-police.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fairoz-539/env-police.git"
+  },
+  "homepage": "https://github.com/fairoz-539/env-police.git",
   "type": "commonjs",
   "dependencies": {
     "chalk": "^4.1.2",
