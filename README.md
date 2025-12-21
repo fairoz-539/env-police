@@ -1,47 +1,47 @@
-# 👮‍♂️ env-police
+# env-police
 
-**Stop breaking production because you forgot an environment variable.**
+A zero-configuration CLI tool that ensures environment variable consistency.
 
-`env-police` is a **zero-config CLI tool** that scans your source code for usage of `process.env` variables and strictly verifies that they are defined in your `.env` file. If any variables are missing, it throws an error—making it ideal for preventing runtime crashes and blocking faulty deployments in CI/CD pipelines.
+`env-police` scans your source code for usage of `process.env` variables and verifies that they are defined in your `.env` file. If required variables are missing, the process exits with an error code, preventing runtime crashes and blocking faulty deployments in CI/CD pipelines.
 
----
+## Features
 
-## 🚀 Features
+* **Recursive Scanning:** Automatically scans all `.js`, `.jsx`, `.ts`, and `.tsx` files in the specified directory.
+* **Smart Detection:** Identifies both standard usage (`process.env.KEY`) and destructuring patterns (`const { KEY } = process.env`).
+* **CI/CD Integration:** Designed to fail build pipelines (Exit Code 1) if the environment configuration is incomplete.
+* **Zero Configuration:** Works immediately with sensible defaults (scans `./src` and checks against `./.env`).
 
-* 🔍 **Auto-Scan**
-  Recursively scans all `.js`, `.jsx`, `.ts`, and `.tsx` files.
+## Installation
 
-* 🧠 **Smart Detection**
-  Detects both:
+You can execute the tool directly via `npx` or install it as a development dependency.
 
-  * Standard usage: `process.env.API_KEY`
-  * Destructuring: `const { API_KEY } = process.env`
-
-* 🛑 **CI/CD Ready**
-  Exits with **error code `1`** if required environment variables are missing.
-
-* ⚙️ **Zero Configuration**
-  Works out of the box with sensible defaults.
-
----
-
-## 📦 Installation
-
-You can run `env-police` directly with `npx`, or install it locally as a development dependency (recommended).
-
-### Using npx (one-time use)
+### One-time execution
 
 ```bash
 npx env-police
 ```
 
-### Install locally (recommended)
+### Local installation (Recommended)
+
+Installing locally ensures version consistency across your team and CI environments.
 
 ```bash
 npm install --save-dev env-police
 ```
 
-Then add it to your `package.json` scripts:
+## Usage
+
+### Basic Usage
+
+Run the command in your project root. By default, it scans the `src` directory and compares usages against the `.env` file.
+
+```bash
+npx env-police
+```
+
+### NPM Script Integration
+
+For continuous integration, it is recommended to add `env-police` to your build scripts in `package.json`. This ensures the build fails if environment variables are missing.
 
 ```json
 {
@@ -52,84 +52,52 @@ Then add it to your `package.json` scripts:
 }
 ```
 
----
+## CLI Options
 
-## 🛠 Command Line Options
+The tool accepts several flags to customize behavior.
 
-Run `env-police --help` to see all available options.
+| Option | Alias | Description | Default |
+| --- | --- | --- | --- |
+| `--path <dir>` | `-p` | Directory to scan for source code. | `./src` |
+| `--env <file>` | `-e` | Path to the environment file to validate against. | `./.env` |
+| `--version` | `-V` | Output the current version number. | — |
+| `--help` | `-h` | Display help information. | — |
 
-| Option         | Alias | Description                                                       | Default  |
-| -------------- | ----- | ----------------------------------------------------------------- | -------- |
-| `--path <dir>` | `-p`  | Directory to scan for source code. Recursively scans JS/TS files. | `./src`  |
-| `--env <file>` | `-e`  | Path to the environment file to validate against.                 | `./.env` |
-| `--version`    | `-V`  | Output the current version number.                                | —        |
-| `--help`       | `-h`  | Display help information.                                         | —        |
+## Examples
 
----
-
-## 📖 Usage Examples
-
-### 1. Standard Usage (React / Node defaults)
-
-Scans `./src` and validates against `./.env`.
-
-```bash
-npx env-police
-```
-
----
-
-### 2. Scan a Custom Folder
-
-If your backend code lives in a `server` directory:
+**Scan a custom server directory:**
 
 ```bash
 npx env-police --path ./server
 ```
 
----
-
-### 3. Use a Custom Environment File
-
-Useful for production or environment-specific setups:
+**Validate against a production environment file:**
 
 ```bash
 npx env-police --env .env.production
 ```
 
----
-
-### 4. Scan Everything in the Project Root
-
-Helpful for small projects or root-level scripts
-(`node_modules` is ignored automatically).
+**Scan the project root (ignoring node_modules):**
 
 ```bash
 npx env-police --path .
 ```
 
----
+## Technical Details
 
-## 🤖 How It Works
+When executed, `env-police` performs the following operations:
 
-1. Reads and parses keys from your `.env` file.
-2. Recursively scans all source files in the specified `--path`.
-3. Extracts environment variable usage using regex:
+1. **Parse:** Reads the specified `.env` file and extracts defined keys.
+2. **Scan:** Recursively walks through the target directory to find JavaScript and TypeScript files.
+3. **Analyze:** Uses static analysis to find instances of `process.env` usage.
+4. **Validate:** Compares the used variables against the defined keys.
+   * If all variables are present, the process exits with code `0`.
+   * If variables are missing, it lists them in the console and exits with code `1`.
 
-   * `process.env.VAR_NAME`
-   * `const { VAR_NAME } = process.env`
-4. Compares detected variables with keys in the `.env` file.
-5. Reports missing variables:
+## License
 
-   * **Exit code `1`** → Missing variables (fail)
-   * **Exit code `0`** → All variables present (success)
+ISC
+```
 
----
-
-## ✅ Why Use env-police?
-
-* Prevents runtime crashes caused by missing environment variables
-* Catches configuration issues **before deployment**
-* Perfect for CI/CD pipelines and production-grade applications
-* Zero setup, fast execution, and framework-agnostic
-
+This is now **one complete Markdown file** — no fragments, no separate blocks. You can paste it directly into your repository’s `README.md`.
+```
